@@ -148,7 +148,9 @@ export default function CandidateDashboard({ token }) {
           {/* Resume upload */}
           <div className="card" style={{ padding: "20px 24px" }}>
             <h3 style={{ fontWeight: 700, marginBottom: 4, fontSize: 15 }}>Resume</h3>
-            <p style={{ color: "#666", fontSize: 13, marginBottom: 14 }}>Upload PDF, max 4MB. Used for AI matching.</p>
+            <p style={{ color: "#666", fontSize: 13, marginBottom: 14 }}>
+              PDF only, max 4MB. Replaces your current resume.
+            </p>
 
             <label style={{ cursor: "pointer", display: "block", marginBottom: 10 }}>
               <input
@@ -166,6 +168,13 @@ export default function CandidateDashboard({ token }) {
                 {resumeFile ? `📄 ${resumeFile.name}` : "Click to select PDF"}
               </div>
             </label>
+
+            {/* Show current resume if exists */}
+            {data?.profile?.has_resume && !resumeFile && (
+              <p style={{ fontSize: 12, color: "#888", marginBottom: 8 }}>
+                ✓ Resume on file — upload a new one to replace it
+              </p>
+            )}
 
             <Btn onClick={uploadResume} disabled={!resumeFile || uploading} full>
               {uploading ? "Uploading…" : "Upload Resume"}

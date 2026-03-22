@@ -40,7 +40,10 @@ export default function App() {
   const [userType, setUserType]         = useState(() => localStorage.getItem("fj_usertype") || null);
   const [companySet, setCompanySet]     = useState(() => localStorage.getItem("fj_company") || null);
   const [candidateReady, setCandidateReady] = useState(() => localStorage.getItem("fj_candidate_ready") || null);
-  const [page, setPage]                 = useState("jobs");
+  const [page, setPage] = useState(() => {
+  const savedType = localStorage.getItem("fj_usertype");
+  return savedType === "recruiter" ? "recruiter_dashboard" : "jobs";
+});
   const [checking, setChecking]         = useState(true);
 
   // ── On load: verify token + check profiles ────────────────────
