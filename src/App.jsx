@@ -12,6 +12,7 @@ import RecruiterDashboard   from "./pages/RecruiterDashboard.jsx";
 import RecruiterOnboarding  from "./pages/RecruiterOnboarding.jsx";
 import CandidateOnboarding  from "./pages/CandidateOnboarding.jsx";
 import MyJobsPage           from "./pages/MyJobsPage.jsx";
+import PrivacyPolicy        from "./pages/PrivacyPolicy.jsx";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
@@ -209,6 +210,11 @@ export default function App() {
   // ── Google OAuth callback — AFTER all handlers are defined ────
   if (window.location.pathname === "/auth/callback") {
     return <AuthCallback onAuth={handleAuth} />;
+  }
+
+  // ── Privacy Policy — accessible without login ─────────────────
+  if (window.location.pathname === "/privacy") {
+    return <PrivacyPolicy onBack={() => window.history.back()} />;
   }
 
   // Loading spinner
