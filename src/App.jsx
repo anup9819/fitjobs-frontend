@@ -13,7 +13,7 @@ import RecruiterOnboarding  from "./pages/RecruiterOnboarding.jsx";
 import CandidateOnboarding  from "./pages/CandidateOnboarding.jsx";
 import MyJobsPage           from "./pages/MyJobsPage.jsx";
 
-const API = "http://localhost:8000/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 async function refreshAccessToken() {
   const refresh = localStorage.getItem("fj_refresh");

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import apiFetch from "../api/index.js";
 
-const API = "http://localhost:8000/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 // ── OTP Input ─────────────────────────────────────────────────────
 const OtpInput = ({ value, onChange }) => {
