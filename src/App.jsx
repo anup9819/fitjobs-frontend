@@ -106,7 +106,7 @@ export default function App() {
             });
             if (profileRes.ok) {
               const profile = await profileRes.json();
-              if (profile.profile?.first_name) {
+              if (profile.profile?.onboarding_complete) {
                 localStorage.setItem("fj_candidate_ready", "true");
                 setCandidateReady("true");
               } else {
