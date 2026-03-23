@@ -135,7 +135,7 @@ export default function App() {
     return () => clearInterval(interval);
   }, [token]);
 
-  const handleAuth = (access, refresh, type, companyName = "") => {
+  const handleAuth = async (access, refresh, type, companyName = "") => {
     localStorage.setItem("fj_token",    access);
     localStorage.setItem("fj_refresh",  refresh);
     localStorage.setItem("fj_usertype", type);
@@ -147,6 +147,43 @@ export default function App() {
     setUserType(type);
     // Clean up the URL
     window.history.replaceState({}, "", "/");
+
+    // For candidates — check if onboarding was already completed
+    // (critical for Google OAuth users who would otherwise always see onboarding)
+    if (type === "candidate") {
+      try {
+        const res = await fetch(`${API}/accounts/dashboard/`, {
+          headers: { Authorization: `Bearer ${access}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.profile?.onboarding_complete) {
+            localStorage.setItem("fj_candidate_ready", "true");
+            setCandidateReady("true");
+          } else {
+            localStorage.removeItem("fj_candidate_ready");
+            setCandidateReady(null);
+          }
+        }
+      } catch { /* ignore, onboarding screen will show as fallback */ }
+    }
+
+    // For recruiters — check if company profile already exists
+    if (type === "recruiter" && !companyName) {
+      try {
+        const res = await fetch(`${API}/accounts/recruiter/profile/`, {
+          headers: { Authorization: `Bearer ${access}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.company_name) {
+            localStorage.setItem("fj_company", data.company_name);
+            setCompanySet(data.company_name);
+          }
+        }
+      } catch { /* ignore */ }
+    }
+
     setPage(type === "recruiter" ? "recruiter_dashboard" : "jobs");
   };
 
