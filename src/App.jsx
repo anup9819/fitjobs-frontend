@@ -137,6 +137,7 @@ export default function App() {
   }, [token]);
 
   const handleAuth = async (access, refresh, type, companyName = "") => {
+    setChecking(true);
     localStorage.setItem("fj_token",    access);
     localStorage.setItem("fj_refresh",  refresh);
     localStorage.setItem("fj_usertype", type);
@@ -186,6 +187,7 @@ export default function App() {
     }
 
     setPage(type === "recruiter" ? "recruiter_dashboard" : "jobs");
+    setChecking(false);
   };
 
   const handleLogout = () => {
