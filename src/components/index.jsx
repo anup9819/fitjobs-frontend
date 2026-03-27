@@ -133,7 +133,7 @@ export const Empty = ({ icon = "🔍", title, subtitle, action }) => (
 // ─── TOPBAR ───────────────────────────────────────────────────────────────────
 export const Topbar = ({ userType, onLogout, page, setPage }) => {
   const links = userType === "candidate"
-    ? [["Find Jobs", "jobs"], ["Recommended", "recommended"], ["My Applications", "applications"], ["Dashboard", "dashboard"]]
+    ? [["Find Jobs", "jobs"], ["External Jobs", "external_jobs"], ["Recommended", "recommended"], ["My Applications", "applications"], ["Dashboard", "dashboard"]]
     : [["My Jobs", "my_jobs"], ["Dashboard", "recruiter_dashboard"]];
 
   return (

@@ -4,7 +4,9 @@ import globalStyles from "../styles/global.js";
 import { Btn } from "../components/index.jsx";
 import ForgotPassword from "./ForgotPassword.jsx";
 
-const BACKEND = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+// const BACKEND = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+const BACKEND = new URL(import.meta.env.VITE_API_URL || 'http://localhost:8000/api').origin;
+
 
 const GoogleIcon = () => (
   <svg width="18" height="18" viewBox="0 0 48 48">
@@ -113,6 +115,7 @@ export default function AuthScreen({ onAuth }) {
   const [form, setForm]             = useState({ email: "", password: "", user_type: "candidate" });
   const [loading, setLoading]       = useState(false);
   const [msg, setMsg]               = useState({ text: "", type: "" });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   // OTP register flow
   const [regStep, setRegStep]       = useState("form");  // form | otp
@@ -130,6 +133,7 @@ export default function AuthScreen({ onAuth }) {
   const resetRegister = () => {
     setRegStep("form");
     setOtp("");
+    setAcceptedTerms(false);
     setMsg({ text: "", type: "" });
   };
 
@@ -140,6 +144,9 @@ export default function AuthScreen({ onAuth }) {
     }
     if (!/\S+@\S+\.\S+/.test(form.email)) {
       setMsg({ text: "Please enter a valid email address", type: "error" }); return;
+    }
+    if (!acceptedTerms) {
+      setMsg({ text: "Please accept the Privacy Policy & Terms of Service", type: "error" }); return;
     }
     setLoading(true); setMsg({ text: "", type: "" });
     const d = await apiFetch.post("/accounts/send-otp/", { email: form.email });
@@ -312,6 +319,29 @@ export default function AuthScreen({ onAuth }) {
                       <option value="recruiter">Hire talent (Recruiter)</option>
                     </select>
                   </div>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <input
+                      type="checkbox"
+                      checked={acceptedTerms}
+                      onChange={e => setAcceptedTerms(e.target.checked)}
+                      style={{
+                        width: 16,
+                        height: 16,
+                        marginTop: 2,
+                        flexShrink: 0,
+                        accentColor: "#e05c00",
+                      }}
+                    />
+                    <p style={{ margin: 0, fontSize: 13, color: "#555", lineHeight: 1.6 }}>
+                      I agree to the{" "}
+                      <a
+                        href="/privacy"
+                        style={{ color: "#e05c00", fontWeight: 600, textDecoration: "none" }}
+                      >
+                        Privacy Policy & Terms of Service
+                      </a>
+                    </p>
+                  </div>
                   {msg.text && <MsgBox msg={msg} />}
                   <Btn onClick={sendOtp} disabled={loading} full>
                     {loading ? "Sending code…" : "Send Verification Code →"}
@@ -356,6 +386,12 @@ export default function AuthScreen({ onAuth }) {
 
         <p style={{ textAlign: "center", marginTop: 28, color: "#888", fontSize: 13, fontWeight: 500 }}>
           Better matches. Better careers.
+        </p>
+        <p style={{ textAlign: "center", marginTop: 10, marginBottom: 24, fontSize: 12, color: "#bbb", lineHeight: 1.5 }}>
+          By signing up you agree to our{" "}
+          <a href="/privacy" style={{ color: "#e05c00", textDecoration: "none", fontWeight: 600 }}>
+            Privacy Policy & Terms of Service
+          </a>
         </p>
       </div>
     </div>

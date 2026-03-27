@@ -5,6 +5,7 @@ import { Topbar } from "./components/index.jsx";
 import AuthScreen           from "./pages/AuthScreen.jsx";
 import AuthCallback         from "./pages/AuthCallback.jsx";
 import JobsPage             from "./pages/JobsPage.jsx";
+import ExternalJobsPage     from "./pages/ExternalJobsPage.jsx";
 import RecommendedPage      from "./pages/RecommendedPage.jsx";
 import ApplicationsPage     from "./pages/ApplicationsPage.jsx";
 import CandidateDashboard   from "./pages/CandidateDashboard.jsx";
@@ -13,6 +14,7 @@ import RecruiterOnboarding  from "./pages/RecruiterOnboarding.jsx";
 import CandidateOnboarding  from "./pages/CandidateOnboarding.jsx";
 import MyJobsPage           from "./pages/MyJobsPage.jsx";
 import PrivacyPolicy        from "./pages/PrivacyPolicy.jsx";
+
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
@@ -245,6 +247,7 @@ export default function App() {
 
   const pages = {
     jobs:                 <JobsPage           token={token} userType={userType} />,
+    external_jobs:        <ExternalJobsPage   token={token} />,
     recommended:          <RecommendedPage    token={token} />,
     applications:         <ApplicationsPage   token={token} />,
     dashboard:            <CandidateDashboard token={token} />,
